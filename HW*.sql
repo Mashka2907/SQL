@@ -24,13 +24,17 @@ select model, speed, hd from pc where (cd = '12x' or cd = '24x') and price<600;
 --6. Для каждого производителя, выпускающего ПК-блокноты c объёмом жесткого диска не менее 10 Гбайт, найти скорости таких ПК-блокнотов. "
 select distinctT product.maker, laptop.speed from product inner join laptop on product.model=laptop.model and laptop.hd>=10;
 --7. Найдите производителей ПК с процессором не менее 450 Мгц.
-select distinct maker from product inner join pc on product.model = pc.model and pc.speed >= 450;
+select distinct maker from product 
+join pc on product.model = pc.model and pc.speed >= 450;
 --8. Найдите среднюю скорость ПК.
 select avg (speed) from pc;
 --9. Найдите среднюю скорость ПК-блокнотов, цена которых превышает 1000 дол.
 select avg (speed) from laptop where price > 1000;
 --10. Найдите среднюю скорость ПК, выпущенных производителем A.
-Select avg(speed) from pc inner join product on pc.model= product.model where maker = 'A' group by maker;
+Select avg(speed) from pc
+join product on pc.model= product.model 
+where maker = 'A' 
+group by maker;
 --11. Найдите размеры жестких дисков, совпадающих у двух и более PC.
 select hd  from pc group by hd having count(model)>1;
 --12. Найдите модели принтеров, имеющих самую высокую цену.
@@ -41,3 +45,21 @@ select price from pc where price between 600 and 850;
 select * from printer where type like '_a%';
 --15. Найти модели ПК-блокнотов, если их цена 700 и 850 дол.
 select model, price from laptop where price in (700, 950);
+--16. Для каждого производителя, имеющего модели в таблице Laptop, найдите средний размер экрана выпускаемых им ПК-блокнотов.
+select distinct maker, avg(screen) from Product
+join laptop on laptop.model = product.model
+group by maker;
+--17. Найдите производителей, выпускающих по меньшей мере три различных модели ПК. Вывести: Maker, число моделей ПК.
+select maker, count(model) from product where type='pc'
+group by maker
+having count(model)>=3;
+--18. Найдите максимальную цену ПК, выпускаемых каждым производителем, у которого есть модели в таблице PC.
+select maker, max(price) as max_price from Product
+join PC on pc.model = product.model
+group by maker;
+-- 19. Для каждого значения скорости ПК, превышающего 600 МГц, определите среднюю цену ПК с такой же скоростью.
+select speed, avg(price) from pc
+where speed > 600
+group by speed;
+
+
