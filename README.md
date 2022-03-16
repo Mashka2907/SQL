@@ -1,1 +1,1 @@
-![Braydon's GitHub Banner](./assert/sql.png)
+![Braydon's GitHub Banner](./assert/sql.jpg)
